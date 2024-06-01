@@ -11,11 +11,16 @@
     "url": "git+https://github.com/eben-quayson/accessKeyManager.git"
   },
   "keywords": [],
+<<<<<<< Updated upstream
   "author": "Ebenezer_Quayson",
+=======
+  "author": "",
+>>>>>>> Stashed changes
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/eben-quayson/accessKeyManager/issues"
   },
+<<<<<<< Updated upstream
   "homepage": "https://github.com/eben-quayson/accessKeyManager#readme",
   "dependencies": {
     "crypto": "^1.0.1",
@@ -24,4 +29,7 @@
     "express": "^4.19.2",
     "mysql2": "^3.10.0"
   }
+=======
+  "homepage": "https://github.com/eben-quayson/accessKeyManager#readme"
+>>>>>>> Stashed changes
 }
