@@ -19,3 +19,5 @@ pool.on('error', (err) => {
   process.exit(-1);
 });
 module.exports = pool;
+
+pool.connect()
