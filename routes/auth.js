@@ -1,7 +1,10 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
-const pool = require('../config/database');
+const pool = require('../config/db');
+const LRU = require('lru-cache');
+const crypto = require('crypto');
+const session = require('express-session');
+
 const router = express.Router();
 
 const transporter = nodemailer.createTransport({
@@ -13,15 +16,17 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Helper function to find a user by email
+const hashPassword = (password) => {
+  return crypto.createHash('sha256').update(password).digest('hex');
+};
+
 async function findUserByEmail(email) {
   const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
   return result.rows[0];
 }
 
-// Helper function to create a new user
 async function createUser(email, password, role) {
-  const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword = hashPassword(password);
   await pool.query(
     'INSERT INTO users (email, password, role, verified) VALUES ($1, $2, $3, $4)',
     [email, hashedPassword, role, false]
@@ -33,7 +38,7 @@ router.post('/signup', async (req, res) => {
   await createUser(email, password, role);
 
   const verificationUrl = `http://localhost:${process.env.PORT}/auth/verify?email=${email}`;
-  
+
   await transporter.sendMail({
     to: email,
     subject: 'Verify Your Email',
@@ -51,8 +56,10 @@ router.get('/verify', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
+  const hashedPassword = hashPassword(password);
   const user = await findUserByEmail(email);
-  if (!user || !await bcrypt.compare(password, user.password)) {
+  
+  if (!user || user.password !== hashedPassword) {
     return res.status(400).send('Invalid credentials.');
   }
   if (!user.verified) {
@@ -81,7 +88,7 @@ router.post('/forgot-password', async (req, res) => {
   const resetToken = Math.random().toString(36).substr(2);
   await pool.query('UPDATE users SET reset_token = $1 WHERE email = $2', [resetToken, email]);
   const resetUrl = `http://localhost:${process.env.PORT}/auth/reset-password?token=${resetToken}`;
-  
+
   await transporter.sendMail({
     to: email,
     subject: 'Reset Password',
@@ -100,7 +107,7 @@ router.post('/reset-password', async (req, res) => {
   const userResult = await pool.query('SELECT * FROM users WHERE reset_token = $1', [token]);
   const user = userResult.rows[0];
   if (user) {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = hashPassword(password);
     await pool.query('UPDATE users SET password = $1, reset_token = $2 WHERE id = $3', [hashedPassword, null, user.id]);
     res.send('Password reset successfully.');
   } else {
