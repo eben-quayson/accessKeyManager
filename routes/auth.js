@@ -1,11 +1,12 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
-const pool = require('../config/db');
+const pool = require('../config/database');
 const LRU = require('lru-cache');
 const crypto = require('crypto');
 const session = require('express-session');
 
 const router = express.Router();
+const cache = new LRU({ max: 100, maxAge: 1000 * 60 * 10 }); // 10 minutes
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
@@ -32,6 +33,15 @@ async function createUser(email, password, role) {
     [email, hashedPassword, role, false]
   );
 }
+
+router.get('/login', (req, res) => {
+  res.render('sign-in');
+});
+
+
+router.get('/signup', (req, res) => {
+  res.render('sign-up');
+});
 
 router.post('/signup', async (req, res) => {
   const { email, password, role } = req.body;
@@ -77,6 +87,11 @@ router.post('/logout', (req, res) => {
     }
     res.send('Logged out successfully.');
   });
+});
+
+// Render the forgot password page
+router.get('/forgot-password', (req, res) => {
+  res.render('forgot-password');
 });
 
 router.post('/forgot-password', async (req, res) => {
