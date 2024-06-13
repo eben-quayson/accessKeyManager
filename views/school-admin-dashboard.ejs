@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Admin Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 80%;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 1rem;
+      text-align: left;
+    }
+    th {
+      background-color: #007bff;
+      color: white;
+    }
+    .purchase-btn {
+      background-color: green;
+      color: white;
+      padding: 0.5rem 1rem;
+      border: none;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+    .purchase-btn:hover {
+      background-color: darkgreen;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>School Admin Dashboard</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Key ID</th>
+          <th>Status</th>
+          <th>Procurement Date</th>
+          <th>Expiry Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% keys.forEach(function(key) { %>
+          <tr>
+            <td><%= key.id %></td>
+            <td><%= key.status %></td>
+            <td><%= key.procurement_date %></td>
+            <td><%= key.expiry_date %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <% if (!hasActiveKey) { %>
+      <form action="/keys/purchase" method="POST">
+        <button type="submit" class="purchase-btn">Purchase New Key</button>
+      </form>
+    <% } else { %>
+      <p>You already have an active key.</p>
+    <% } %>
+  </div>
+</body>
+</html>

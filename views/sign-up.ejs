@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reset Password</title>
+  <title>Sign Up</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -55,15 +55,25 @@
 </head>
 <body>
   <div class="container">
-    <h1>Reset Password</h1>
+    <h1>Sign Up</h1>
       <p style="color: red;"></p>
-    <form action="/auth/reset-password" method="POST">
-      <input type="hidden" name="token" value=" token">
+    <form action="/auth/signup" method="POST">
       <div>
-        <label for="password">New Password:</label>
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" required>
+      </div>
+      <div>
+        <label for="password">Password:</label>
         <input type="password" name="password" id="password" required>
       </div>
-      <button type="submit">Reset Password</button>
+      <div>
+        <label for="role">Role:</label>
+        <select name="role" id="role" required>
+          <option value="school_it">School IT</option>
+          <option value="micro_focus_admin">Micro-Focus Admin</option>
+        </select>
+      </div>
+      <button type="submit">Sign Up</button>
     </form>
   </div>
 </body>
