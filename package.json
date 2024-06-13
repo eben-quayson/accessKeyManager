@@ -19,6 +19,7 @@
   "homepage": "https://github.com/eben-quayson/accessKeyManager#readme",
   "dependencies": {
     "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
     "express": "^4.19.2",
     "express-session": "^1.18.0",
     "expresss": "^0.0.0",
