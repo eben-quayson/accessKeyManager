@@ -1,9 +1,15 @@
 
 const express = require('express');
+<<<<<<< HEAD
 const path = require('path');
 const dotenv = require('dotenv');
 const session = require('express-session');
 
+=======
+const session = require('express-session');
+const path = require('path');
+const dotenv = require('dotenv');
+>>>>>>> 39c0eb35780ca29964b48c14ff42fd19d90c2553
 dotenv.config();
 
 const authRoutes = require('./routes/auth');
