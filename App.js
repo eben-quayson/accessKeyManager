@@ -1,8 +1,8 @@
 
 const express = require('express');
-const session = require('cookie-session');
 const path = require('path');
 const dotenv = require('dotenv');
+const session = require('express-session');
 
 dotenv.config();
 
@@ -10,7 +10,7 @@ const authRoutes = require('./routes/auth');
 const keyRoutes = require('./routes/keys');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 1000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
