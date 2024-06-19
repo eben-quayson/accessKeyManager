@@ -1,9 +1,11 @@
 const pool = require('../config/database');
 
-async function createSchool(name) {
+
+
+async function createSchool(email, password, role) {
   const result = await pool.query(
-    'INSERT INTO schools (name) VALUES ($1) RETURNING *',
-    [name]
+    'INSERT INTO schools (name, password, role) VALUES ($1) RETURNING *',
+    [email, password, role]
   );
   return result.rows[0];
 }

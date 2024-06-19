@@ -1,7 +1,9 @@
+
 const express = require('express');
 const session = require('express-session');
 const path = require('path');
 const dotenv = require('dotenv');
+const models = require('../models/schools')
 
 dotenv.config();
 
@@ -17,8 +19,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
+    resave: true,
+    saveUninitialized: true
   })
 );
 
