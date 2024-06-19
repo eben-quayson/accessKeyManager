@@ -13,8 +13,7 @@ exports.getSignUp = (req, res) => {
 exports.signUp = async (req, res) => {
   const name = { email, password, role } = req.body;
   await createSchool(name);
-  res.status(200).send('all clear');
- /* try {
+  try {
     await authService.createUser(email, password, role);
     const verificationUrl = `http://localhost:${process.env.PORT}/auth/verify?email=${email}`;
     await sendVerificationEmail(email, verificationUrl);
@@ -23,8 +22,8 @@ exports.signUp = async (req, res) => {
     res.status(500).send('Error registering user.');
     await authService.createUser(res);
   }
-};*/
-}
+};
+
 
 exports.verifyEmail = async (req, res) => {
   const { email } = req.query;
