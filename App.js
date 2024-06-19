@@ -1,9 +1,8 @@
 
 const express = require('express');
-const session = require('cookie-session');
+const session = require('express-session');
 const path = require('path');
 const dotenv = require('dotenv');
-
 dotenv.config();
 
 const authRoutes = require('./routes/auth');

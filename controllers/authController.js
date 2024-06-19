@@ -1,6 +1,5 @@
 const authService = require('../services/authService');
 const { sendVerificationEmail, sendResetPasswordEmail } = require('../utils/email');
-const userTable = require('../models/school')
 
 exports.getSignIn = (req, res) => {
   res.render('../views/sign-in');
@@ -12,7 +11,6 @@ exports.getSignUp = (req, res) => {
 
 exports.signUp = async (req, res) => {
   const name = { email, password, role } = req.body;
-  await createSchool(name);
   try {
     await authService.createUser(email, password, role);
     const verificationUrl = `http://localhost:${process.env.PORT}/auth/verify?email=${email}`;
@@ -20,7 +18,6 @@ exports.signUp = async (req, res) => {
     res.status(201).send('User registered. Please check your email to verify your account.');
   } catch (error) {
     res.status(500).send('Error registering user.');
-    await authService.createUser(res);
   }
 };
 
