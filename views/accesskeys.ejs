@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Access Keys</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <h1>Access Keys</h1>
+    <form action="/keys" method="POST">
+        <label for="schoolId">School ID:</label>
+        <input type="text" name="schoolId" id="schoolId" required>
+        <button type="submit">Generate Key</button>
+    </form>
+    <ul>
+        <% keys.forEach(function(key) { %>
+            <li><%= key.key %> - <%= key.is_active ? 'Active' : 'Inactive' %></li>
+        <% }); %>
+    </ul>
+</body>
+</html>

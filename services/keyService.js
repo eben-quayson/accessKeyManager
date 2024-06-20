@@ -1,19 +1,14 @@
-const keyModel = require('../models/key');
+const AccessKey = require('../models/AccessKey');
 
-async function getAllKeys() {
-  return await keyModel.getAllKeys();
+class KeyService {
+    static async createKey(schoolId) {
+        return await AccessKey.createKey(schoolId);
+    }
+
+    static async getAllKeys() {
+        const result = await AccessKey.getKeys();
+        return result;
+    }
 }
 
-async function revokeKey(keyId) {
-  return await keyModel.revokeKey(keyId);
-}
-
-async function getKeyStatus(email) {
-  return await keyModel.getActiveKeyByEmail(email);
-}
-
-module.exports = {
-  getAllKeys,
-  revokeKey,
-  getKeyStatus,
-};
+module.exports = KeyService;
