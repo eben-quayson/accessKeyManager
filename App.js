@@ -2,7 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
 const path = require('path');
-const { config, pool } = require('./config/config');
+const pool = require('./config/pool');
 const authRoutes = require('./routes/authRoutes');
 const keyRoutes = require('./routes/keyRoutes');
 const passwordRoutes = require('./routes/passwordRoutes');
@@ -17,7 +17,7 @@ app.use(session({
     store: new pgSession({
         pool: pool
     }),
-    secret: config.session.secret,
+    secret: process.env.SESSION_SECRET || "defaultSecret",
     resave: false,
     saveUninitialized: false
 }));
@@ -71,10 +71,13 @@ const createSchema = async () => {
     await pool.query(passwordResetTable);
 };
 
-createSchema().then(() => {
-    app.listen(config.server.port, () => {
-        console.log(`Server is running on port ${config.server.port}`);
+createSchema()
+    .then(() => {
+        const PORT = process.env.PORT || 3000;
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+    })
+    .catch(err => {
+        console.error('Error creating schema:', err);
     });
-}).catch(err => {
-    console.error('Error creating schema:', err);
-});

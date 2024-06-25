@@ -1,4 +1,4 @@
-const { pool } = require('../config/config');
+const { pool } = require('../config/pool');
 
 class AccessKey {
     static async createKey(schoolId) {

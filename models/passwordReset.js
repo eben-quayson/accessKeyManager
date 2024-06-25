@@ -1,17 +1,23 @@
-const express = require('express');
-const router = express.Router();
-const PasswordController = require('../controllers/passwordController');
+const { pool } = require('../config/pool');
 
-// GET Reset Password Request Form
-router.get('/request', PasswordController.getRequestForm);
+class PasswordReset {
+    static async createResetRequest(email, token, expiration) {
+        const result = await pool.query(
+            'INSERT INTO password_resets (email, token, expiration) VALUES ($1, $2, $3) RETURNING *',
+            [email, token, expiration]
+        );
+        return result.rows[0];
+    }
 
-// POST Reset Password Request
-router.post('/request', PasswordController.requestReset);
+    static async findResetRequestByToken(token) {
+        const result = await pool.query('SELECT * FROM password_resets WHERE token = $1', [token]);
+        return result.rows[0];
+    }
 
-// GET Reset Password Form
-router.get('/reset/:token', PasswordController.getResetForm);
+    static async deleteResetRequestByToken(token) {
+        const result = await pool.query('DELETE FROM password_resets WHERE token = $1', [token]);
+        return result.rowCount > 0;
+    }
+}
 
-// POST Reset Password
-router.post('/reset/:token', PasswordController.resetPassword);
-
-module.exports = router;
+module.exports = PasswordReset;
