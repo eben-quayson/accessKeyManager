@@ -19,7 +19,7 @@ class AuthController {
             const user = await AuthService.signin(email, password);
             if (user) {
                 req.session.userId = user.email;
-                res.redirect('/dashboard');
+                res.redirect('auth/dashboard');
             } else {
                 res.redirect('/auth/signin');
             }
@@ -33,7 +33,7 @@ class AuthController {
             res.redirect('/auth/signin');
         });
     }
-    static async getDashboard(req, res) {
+    static async dashboard(req, res) {
         try {
             const userEmail = req.session.userId;
             if (!userEmail) {
@@ -45,7 +45,7 @@ class AuthController {
                 return res.redirect('/auth/signin');
             }
 
-            res.render('dashboard', { user });
+            res.render('auth/dashboard', { user });
         } catch (err) {
             res.status(500).json({ error: err.message });
         }

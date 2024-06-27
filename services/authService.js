@@ -17,6 +17,7 @@ class AuthService {
         }
         return null;
     }
+    
 }
 
 module.exports = AuthService;

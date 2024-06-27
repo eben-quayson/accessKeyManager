@@ -1,4 +1,5 @@
 const { Pool } = require('pg');
+const { connectionString } = require('pg/lib/defaults');
 require('dotenv').config();
 
 const config = {
@@ -14,7 +15,8 @@ const config = {
         database: process.env.DB_NAME,
         password: process.env.DB_PASSWORD,
         port: process.env.DB_PORT || 5432,
-        ssl: process.env.ssl === false
+        ssl: process.env.ssl === false,
+        connectionString: process.env.DATABASE_URL
     },
     email: {
         user: process.env.EMAIL_USER,
@@ -23,12 +25,13 @@ const config = {
 };
 
 const pool = new Pool({
+    connectionString: config.db.DATABASE_URL,
     user: config.db.user,
     host: config.db.host,
     database: config.db.database,
     password: config.db.password,
     port: config.db.port,
-    ssl: config.db.ssl ? {rejectUnauthorized: false } : false
+    ssl: config.db.ssl ? {rejectUnauthorized: false } : false,
 });
 
 // Testing the database connection 1,2..
