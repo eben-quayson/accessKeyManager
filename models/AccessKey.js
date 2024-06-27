@@ -1,8 +1,8 @@
-const { pool } = require('../config/pool');
+const { pool } = require('../config/config');
 
 class AccessKey {
     static async createKey(schoolId) {
-        const key = require('crypto').randomBytes(16).toString('hex');
+        const key = require('crypto').randomBytes(32).toString('hex');
         const result = await pool.query(
             'INSERT INTO access_keys (key, school_id, is_active) VALUES ($1, $2, $3) RETURNING *',
             [key, schoolId, false]

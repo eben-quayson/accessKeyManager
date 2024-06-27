@@ -6,15 +6,17 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <h1>Sign In</h1>
-    <form action="/auth/signin" method="POST">
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" required>
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required>
-        <button type="submit">Sign In</button>
-    </form>
-    <p>Don't have an account? <a href="/auth/signup">Sign Up</a></p>
-    <p><a href="/password/request">Forgot Password?</a></p>
+    <div class="container">
+        <h1>Sign In</h1>
+        <form action="/auth/signin" method="POST">
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" required>
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required>
+            <button type="submit">Sign In</button>
+        </form>
+        <p>Don't have an account? <a href="/auth/signup">Sign Up</a></p>
+        <p>Forgot your password? <a href="/password/request">Reset Password</a></p>
+    </div>
 </body>
 </html>

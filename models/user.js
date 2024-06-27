@@ -1,4 +1,4 @@
-const { pool } = require('../config/pool');
+const { pool } = require('../config/config');
 
 class User {
     static async createUser(email, password) {
@@ -24,3 +24,22 @@ class User {
 }
 
 module.exports = User;
+
+
+/*const pool = require('../config/config').pool;
+
+class User {
+    static async findOne(params) {
+        const { email, id } = params;
+        let result;
+        if (email) {
+            result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+        } else if (id) {
+            result = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+        }
+        return result.rows[0];
+    }
+}
+
+module.exports = User;
+*/

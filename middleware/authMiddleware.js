@@ -1,4 +1,4 @@
-const { pool } = require('../config/pool');
+const { pool } = require('../config/config');
 
 class User {
     static async createUser(email, password) {

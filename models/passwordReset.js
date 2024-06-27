@@ -1,4 +1,4 @@
-const { pool } = require('../config/pool');
+const { pool } = require('../config/config');
 
 class PasswordReset {
     static async createResetRequest(email, token, expiration) {

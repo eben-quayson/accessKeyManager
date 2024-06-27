@@ -33,6 +33,23 @@ class AuthController {
             res.redirect('/auth/signin');
         });
     }
+    static async getDashboard(req, res) {
+        try {
+            const userEmail = req.session.userId;
+            if (!userEmail) {
+                return res.redirect('/auth/signin');
+            }
+
+            const user = await User.findOne({ email: userEmail });
+            if (!user) {
+                return res.redirect('/auth/signin');
+            }
+
+            res.render('dashboard', { user });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
+    }
 }
 
 module.exports = AuthController;
