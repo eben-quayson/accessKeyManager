@@ -21,10 +21,14 @@ class AuthController {
                 req.session.isAdmin = user.is_admin;
                 res.redirect('/dashboard');
             } else {
-                res.redirect('/auth/signin');
+                const error = err.message;
+                res.render('signin', {error});
+                //res.redirect('/auth/signin');
             }
         } catch (err) {
-            res.status(500).json({ error: err.message });
+            //res.status(500).json({ error: err.message });
+            const error =err.message;
+            res.render('signin', {error});
         }
     }
 
