@@ -1,6 +1,5 @@
 //
-const PasswordReset = require('../models/passwordReset');
-const User = require('../models/User');
+const PasswordReset = require('../models/passwordReset')
 const crypto = require('crypto');
 const sendEmail = require('../utils/sendEmail');
 

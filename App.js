@@ -62,16 +62,19 @@ const createSchema = async () => {
         );
     `;
 
-    /*const passwordResetTable = `
+    const passwordResetTable = `
         CREATE TABLE IF NOT EXISTS password_resets (
-            
+            id SERIAL PRIMARY KEY,
+            email VARCHAR(255) NOT NULL,
+            token VARCHAR(255) UNIQUE NOT NULL,
+            expiration BIGINT NOT NULL
         );
     `;
-        */
+
 
     await pool.query(userTable);
     await pool.query(accessKeyTable);
-    //await pool.query(passwordResetTable);
+    await pool.query(passwordResetTable);
 };
 
 
