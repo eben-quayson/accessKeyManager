@@ -16,6 +16,9 @@
             <button type="submit">Sign Up</button>
         </form>
         <p>Already have an account? <a href="/auth/signin">Sign In</a></p>
+        <% if (typeof error !== 'undefined' && error){ %>
+            <p><%= error %></p>
+        <% } %>
     </div>
 </body>
 </html>

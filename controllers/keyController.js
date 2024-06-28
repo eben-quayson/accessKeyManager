@@ -1,20 +1,28 @@
 const KeyService = require('../services/keyService');
 
 class KeyController {
-    static async createKey(req, res) {
+    static async generateKey(req, res) {
         try {
-            const { schoolId } = req.body;
-            const key = await KeyService.createKey(schoolId);
-            res.redirect('/keys');
+            const key = await KeyService.generateKey(req.session.userId);
+            res.json({ key });
         } catch (err) {
             res.status(500).json({ error: err.message });
         }
     }
 
-    static async getKeys(req, res) {
+    static async getUserKeys(req, res) {
+        try {
+            const keys = await KeyService.getUserKeys(req.session.userId);
+            res.json({ keys });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
+    }
+
+    static async getAllKeys(req, res) {
         try {
             const keys = await KeyService.getAllKeys();
-            res.render('accesskeys', { keys });
+            res.json({ keys });
         } catch (err) {
             res.status(500).json({ error: err.message });
         }

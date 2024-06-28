@@ -17,6 +17,10 @@
         </form>
         <p>Don't have an account? <a href="/auth/signup">Sign Up</a></p>
         <p>Forgot your password? <a href="/password/request">Reset Password</a></p>
+
+        <% if (typeof error !== 'undefined' && error){ %>
+            <p><%= error %></p>
+        <% } %>
     </div>
 </body>
 </html>

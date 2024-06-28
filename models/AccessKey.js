@@ -1,26 +1,43 @@
 const { pool } = require('../config/config');
 
 class AccessKey {
-    static async createKey(schoolId) {
-        const key = require('crypto').randomBytes(32).toString('hex');
-        const result = await pool.query(
-            'INSERT INTO access_keys (key, school_id, is_active) VALUES ($1, $2, $3) RETURNING *',
-            [key, schoolId, false]
-        );
-        return result.rows[0];
+    static async createKey(userId) {
+        const key = crypto.randomBytes(16).toString('hex');
+        const client = await pool.connect();
+        try {
+            const result = await client.query(
+                `INSERT INTO access_keys (key, user_id, creation_date, expiration_date)
+                 VALUES ($1, $2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP + INTERVAL '1 year')
+                 RETURNING *`,
+                [key, userId]
+            );
+            return result.rows[0];
+        } finally {
+            client.release();
+        }
     }
 
-    static async getKeyByKey(key) {
-        const result = await pool.query('SELECT * FROM access_keys WHERE key = $1', [key]);
-        return result.rows[0];
+    static async getKeysByUser(userId) {
+        const client = await pool.connect();
+        try {
+            const result = await client.query(
+                `SELECT * FROM access_keys WHERE user_id = $1`,
+                [userId]
+            );
+            return result.rows;
+        } finally {
+            client.release();
+        }
     }
 
-    static async activateKey(key) {
-        const result = await pool.query(
-            'UPDATE access_keys SET is_active = $1 WHERE key = $2 RETURNING *',
-            [true, key]
-        );
-        return result.rows[0];
+    static async getAllKeys() {
+        const client = await pool.connect();
+        try {
+            const result = await client.query(`SELECT * FROM access_keys`);
+            return result.rows;
+        } finally {
+            client.release();
+        }
     }
 }
 

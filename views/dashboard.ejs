@@ -6,38 +6,55 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome, <%= user.email %>!</h1>
-        <p>This is your dashboard.</p>
+    <h1>Welcome, <%= email %></h1>
+    <h2>Your Access Keys</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Key</th>
+                <th>Creation Date</th>
+                <th>Expiration Date</th>
+                <th>Active</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% userKeys.forEach(key => { %>
+                <tr>
+                    <td><%= key.key %></td>
+                    <td><%= key.creation_date %></td>
+                    <td><%= key.expiration_date %></td>
+                    <td><%= key.is_active %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
 
-        <% if (user.is_admin) { %>
-            <h2>All Access Keys</h2>
-        <% } else { %>
-            <h2>Your Access Keys</h2>
-        <% } %>
-
+    <% if (isAdmin) { %>
+        <h2>All Access Keys</h2>
         <table>
             <thead>
                 <tr>
                     <th>Key</th>
-                    <th>School ID</th>
-                    <th>Status</th>
+                    <th>Creation Date</th>
+                    <th>Expiration Date</th>
+                    <th>Active</th>
                 </tr>
             </thead>
             <tbody>
-                <% accessKeys.forEach(key => { %>
+                <% allKeys.forEach(key => { %>
                     <tr>
                         <td><%= key.key %></td>
-                        <td><%= key.school_id %></td>
-                        <td><%= key.is_active ? 'Active' : 'Inactive' %></td>
+                        <td><%= key.creation_date %></td>
+                        <td><%= key.expiration_date %></td>
+                        <td><%= key.is_active %></td>
                     </tr>
                 <% }) %>
             </tbody>
         </table>
+    <% } %>
 
-        <form action="/auth/signout" method="POST">
-            <button type="submit">Sign Out</button>
-        </form>
-    </div>
+    <form action="/auth/signout" method="POST">
+        <button type="submit">Sign Out</button>
+    </form>
 </body>
 </html>

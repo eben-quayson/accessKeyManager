@@ -1,13 +1,19 @@
 const AccessKey = require('../models/AccessKey');
 
 class KeyService {
-    static async createKey(schoolId) {
-        return await AccessKey.createKey(schoolId);
+    static async generateKey(userId) {
+        const key = await AccessKey.createKey(userId);
+        return key;
+    }
+
+    static async getUserKeys(userId) {
+        const keys = await AccessKey.getKeysByUser(userId);
+        return keys;
     }
 
     static async getAllKeys() {
-        const result = await AccessKey.getKeys();
-        return result;
+        const keys = await AccessKey.getAllKeys();
+        return keys;
     }
 }
 

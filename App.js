@@ -45,7 +45,9 @@ const createSchema = async () => {
             id SERIAL PRIMARY KEY,
             email VARCHAR(255) UNIQUE NOT NULL,
             password VARCHAR(255) NOT NULL,
-            is_admin BOOLEAN DEFAULT FALSE
+            is_admin BOOLEAN DEFAULT FALSE,
+            is_verified BOOLEAN DEFAULT FALSE,
+            verification_token VARCHAR(255)
         );
     `;
 
@@ -53,25 +55,25 @@ const createSchema = async () => {
         CREATE TABLE IF NOT EXISTS access_keys (
             id SERIAL PRIMARY KEY,
             key VARCHAR(255) UNIQUE NOT NULL,
-            school_id VARCHAR(255) NOT NULL,
-            is_active BOOLEAN DEFAULT FALSE
+            user_id INTEGER REFERENCES users(id),
+            is_active BOOLEAN DEFAULT TRUE,
+            creation_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            expiration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP + INTERVAL '1 year'
         );
     `;
 
-    const passwordResetTable = `
+    /*const passwordResetTable = `
         CREATE TABLE IF NOT EXISTS password_resets (
-            id SERIAL PRIMARY KEY,
-            email VARCHAR(255) NOT NULL,
-            token VARCHAR(255) UNIQUE NOT NULL,
-            expiration BIGINT NOT NULL
+            
         );
     `;
-        
+        */
 
     await pool.query(userTable);
     await pool.query(accessKeyTable);
-    await pool.query(passwordResetTable);
+    //await pool.query(passwordResetTable);
 };
+
 
 createSchema()
     .then(() => {
