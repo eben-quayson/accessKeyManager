@@ -7,7 +7,7 @@ class AuthController {
             const { email, password } = req.body;
             const user = await signup(email, password);
             req.session.userId = user.email;
-            res.redirect('/dashboard');
+            res.render('/dashboard');
         } catch (err) {
             res.status(500).json({ error: err.message });
         }
@@ -19,9 +19,9 @@ class AuthController {
             const user = await signin(email, password);
             if (user) {
                 req.session.userId = user.email;
-                res.redirect('/dashboard');
+                res.render('/dashboard');
             } else {
-                res.redirect('/auth/signin');
+                res.render('/auth/signin');
             }
         } catch (err) {
             res.status(500).json({ error: err.message });
