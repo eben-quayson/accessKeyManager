@@ -1,12 +1,13 @@
-const AuthService = require('../services/authService');
-const KeyService = require('../services/keyService');
+const { signup, signin } = require('../services/authService');
+const { verifyUser, findUserByVerificationToken } = require('../models/User');
 
 class AuthController {
     static async signup(req, res) {
         try {
             const { email, password } = req.body;
-            await AuthService.signup(email, password);
-            res.redirect('/auth/signin');
+            const user = await signup(email, password);
+            req.session.userId = user.email;
+            res.redirect('/dashboard');
         } catch (err) {
             res.status(500).json({ error: err.message });
         }
@@ -15,20 +16,30 @@ class AuthController {
     static async signin(req, res) {
         try {
             const { email, password } = req.body;
-            const user = await AuthService.signin(email, password);
+            const user = await signin(email, password);
             if (user) {
-                req.session.userId = user.id;
-                req.session.isAdmin = user.is_admin;
+                req.session.userId = user.email;
                 res.redirect('/dashboard');
             } else {
-                const error = err.message;
-                res.render('signin', {error});
-                //res.redirect('/auth/signin');
+                res.redirect('/auth/signin');
             }
         } catch (err) {
-            //res.status(500).json({ error: err.message });
-            const error =err.message;
-            res.render('signin', {error});
+            res.status(500).json({ error: err.message });
+        }
+    }
+
+    static async verifyEmail(req, res) {
+        try {
+            const { token } = req.params;
+            const user = await findUserByVerificationToken(token);
+            if (user) {
+                await verifyUser(user.email);
+                res.send('Email verified successfully');
+            } else {
+                res.status(400).send('Invalid or expired token');
+            }
+        } catch (err) {
+            res.status(500).json({ error: err.message });
         }
     }
 
@@ -36,38 +47,6 @@ class AuthController {
         req.session.destroy(() => {
             res.redirect('/auth/signin');
         });
-    }
-
-    static async verifyEmail(req, res) {
-        try {
-            const { token } = req.params;
-            const success = await AuthService.verifyEmail(token);
-            if (success) {
-                res.redirect('/auth/signin');
-            } else {
-                res.status(400).json({ error: 'Invalid or expired token' });
-            }
-        } catch (err) {
-            res.status(500).json({ error: err.message });
-        }
-    }
-
-    static async dashboard(req, res) {
-        try {
-            const userKeys = await KeyService.getUserKeys(req.session.userId);
-            let allKeys = [];
-            if (req.session.isAdmin) {
-                allKeys = await KeyService.getAllKeys();
-            }
-            res.render('dashboard', {
-                email: req.session.userId,
-                userKeys,
-                allKeys,
-                isAdmin: req.session.isAdmin
-            });
-        } catch (err) {
-            res.status(500).json({ error: err.message });
-        }
     }
 }
 

@@ -1,45 +1,54 @@
+const { Pool } = require('pg');
 const { pool } = require('../config/config');
 
-class User {
-    static async createUser(email, password) {
-        const result = await pool.query(
-            'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *',
-            [email, password]
+const createUserTable = async () => {
+    const query = `
+        CREATE TABLE IF NOT EXISTS users (
+            email VARCHAR(255) PRIMARY KEY,
+            password TEXT NOT NULL,
+            is_admin BOOLEAN DEFAULT FALSE,
+            is_verified BOOLEAN DEFAULT FALSE,
+            verification_token TEXT,
+            created_at TIMESTAMPTZ DEFAULT NOW()
         );
-        return result.rows[0];
-    }
+    `;
+    await pool.query(query);
+};
 
-    static async getUserByEmail(email) {
-        const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-        return result.rows[0];
-    }
+const addUser = async (email, password, verificationToken) => {
+    const query = `
+        INSERT INTO users (email, password, verification_token) 
+        VALUES ($1, $2, $3) RETURNING *;
+    `;
+    const values = [email, password, verificationToken];
+    const result = await pool.query(query, values);
+    return result.rows[0];
+};
 
-    static async updatePasswordByEmail(email, password) {
-        const result = await pool.query(
-            'UPDATE users SET password = $1 WHERE email = $2 RETURNING *',
-            [password, email]
-        );
-        return result.rows[0];
-    }
-}
+const findUserByEmail = async (email) => {
+    const query = `SELECT * FROM users WHERE email = $1;`;
+    const values = [email];
+    const result = await pool.query(query, values);
+    return result.rows[0];
+};
 
-module.exports = User;
+const findUserByVerificationToken = async (token) => {
+    const query = `SELECT * FROM users WHERE verification_token = $1;`;
+    const values = [token];
+    const result = await pool.query(query, values);
+    return result.rows[0];
+};
 
+const verifyUser = async (email) => {
+    const query = `UPDATE users SET is_verified = TRUE, verification_token = NULL WHERE email = $1;`;
+    const values = [email];
+    await pool.query(query, values);
+};
 
-/*const pool = require('../config/config').pool;
-
-class User {
-    static async findOne(params) {
-        const { email, id } = params;
-        let result;
-        if (email) {
-            result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-        } else if (id) {
-            result = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
-        }
-        return result.rows[0];
-    }
-}
-
-module.exports = User;
-*/
+module.exports = {
+    createUserTable,
+    addUser,
+    findUserByEmail,
+    findUserByVerificationToken,
+    verifyUser
+};

@@ -1,5 +1,5 @@
 const { Pool } = require('pg');
-const { connectionString } = require('pg/lib/defaults');
+const {connectionString} = require('pg/lib/defaults');
 require('dotenv').config();
 
 const config = {
@@ -25,7 +25,7 @@ const config = {
 };
 
 const pool = new Pool({
-    connectionString: config.db.DATABASE_URL,
+    connectionString: config.db.connectionString,
     user: config.db.user,
     host: config.db.host,
     database: config.db.database,
