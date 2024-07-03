@@ -10,6 +10,7 @@ class AuthController {
             res.render('/dashboard');
         } catch (err) {
             res.status(500).json({ error: err.message });
+            res.render('/signup');
         }
     }
 
@@ -25,6 +26,7 @@ class AuthController {
             }
         } catch (err) {
             res.status(500).json({ error: err.message });
+            res.render('/signin');
         }
     }
 
