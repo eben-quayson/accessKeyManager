@@ -21,7 +21,7 @@ class AuthController {
                 req.session.userId = user.email;
                 res.render('/dashboard');
             } else {
-                res.render('/auth/signin');
+                res.render('/signin');
             }
         } catch (err) {
             res.status(500).json({ error: err.message });
