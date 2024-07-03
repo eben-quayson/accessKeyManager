@@ -1,5 +1,5 @@
 const { signup, signin } = require('../services/authService');
-const { verifyUser, findUserByVerificationToken } = require('../models/user');
+const { verifyUser, findUserByVerificationToken } = require('../models/User');
 
 class AuthController {
     static async signup(req, res) {
