@@ -9,7 +9,7 @@ class AuthController {
             req.session.userId = user.email;
             res.render('/dashboard');
         } catch (err) {
-            res.status(500).json({ error: err.message });
+            //res.status(500).json({ error: err.message });
             res.render('/signup');
         }
     }
@@ -25,7 +25,7 @@ class AuthController {
                 res.render('/signin');
             }
         } catch (err) {
-            res.status(500).json({ error: err.message });
+           // res.status(500).json({ error: err.message });
             res.render('/signin');
         }
     }
