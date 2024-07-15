@@ -2,15 +2,22 @@ const { signup, signin } = require('../services/authService');
 const { verifyUser, findUserByVerificationToken } = require('../models/User');
 
 class AuthController {
+    static renderSignUpForm (req, res) {
+        res.render("signup")
+    }
+
+    static renderSignInForm (req, res) {
+        res.render("signin")
+    }
+
     static async signup(req, res) {
         try {
             const { email, password } = req.body;
             const user = await signup(email, password);
             req.session.userId = user.email;
-            res.render('/dashboard');
+            res.render('dashboard');
         } catch (err) {
-            //res.status(500).json({ error: err.message });
-            res.render('/signup');
+            console.log('Error signing up new user', err)
         }
     }
 
@@ -20,13 +27,13 @@ class AuthController {
             const user = await signin(email, password);
             if (user) {
                 req.session.userId = user.email;
-                res.render('/dashboard');
+                console.log({ email: user.email, isAdmin: user.isAdmin, userKeys: user.keys, allKeys: user.allKeys })
+                res.render('dashboard', { email: user.email, isAdmin: user.isAdmin, userKeys: user.keys, allKeys: user.allKeys });
             } else {
                 res.render('/signin');
             }
         } catch (err) {
-           // res.status(500).json({ error: err.message });
-            res.render('/signin');
+           res.status(500).json({ error: err.message });
         }
     }
 

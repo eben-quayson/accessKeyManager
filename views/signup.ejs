@@ -8,17 +8,23 @@
 <body>
     <div class="container">
         <h1>Sign Up</h1>
-        <form action="/auth/signup" method="POST">
+
+        <form action="signup" method="POST">
+
             <label for="email">Email:</label>
             <input type="email" name="email" id="email" required>
+
             <label for="password">Password:</label>
             <input type="password" name="password" id="password" required>
+
             <button type="submit">Sign Up</button>
         </form>
-        <p>Already have an account? <a href="/auth/signin">Sign In</a></p>
+
+        <p>Already have an account? <a href="signin">Sign In</a></p>
         <% if (typeof error !== 'undefined' && error){ %>
             <p><%= error %></p>
         <% } %>
     </div>
+
 </body>
 </html>

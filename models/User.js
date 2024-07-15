@@ -1,21 +1,8 @@
 const { Pool } = require('pg');
 const { pool } = require('../config/config');
 
-const createUserTable = async () => {
-    const query = `
-        CREATE TABLE IF NOT EXISTS users (
-            email VARCHAR(255) PRIMARY KEY,
-            password TEXT NOT NULL,
-            is_admin BOOLEAN DEFAULT FALSE,
-            is_verified BOOLEAN DEFAULT FALSE,
-            verification_token TEXT,
-            created_at TIMESTAMPTZ DEFAULT NOW()
-        );
-    `;
-    await pool.query(query);
-};
-
 const addUser = async (email, password, verificationToken) => {
+
     const query = `
         INSERT INTO users (email, password, verification_token) 
         VALUES ($1, $2, $3) RETURNING *;
@@ -46,7 +33,7 @@ const verifyUser = async (email) => {
 };
 
 module.exports = {
-    createUserTable,
+    // createUserTable,
     addUser,
     findUserByEmail,
     findUserByVerificationToken,

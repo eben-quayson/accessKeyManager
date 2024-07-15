@@ -6,22 +6,21 @@ const {pool} = require('./config/config');
 const authRoutes = require('./routes/authRoutes');
 const keyRoutes = require('./routes/keyRoutes');
 const passwordRoutes = require('./routes/passwordRoutes');
+const MemoryStore = require('memorystore')(session)
 
 const app = express();
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(session({
-    store: new pgSession({
-        pool: pool
-    }),
-    secret: process.env.SESSION_SECRET || "defaultSecret",
+    store: new MemoryStore({
+        checkPeriod: 86400000  // prune expired entries every 24h
+      }),
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
 }));
-
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -29,15 +28,9 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 app.use('/auth', authRoutes);
 app.use('/keys', keyRoutes);
 app.use('/password', passwordRoutes);
-
-app.get('/', (req, res) => {
-    res.render('signin');
-});
-
 
 const createSchema = async () => {
     const userTable = `
@@ -78,13 +71,18 @@ const createSchema = async () => {
 };
 
 
-createSchema()
-    .then(() => {
-        const PORT = process.env.PORT || 4000;
-        app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
-        });
-    })
-    .catch(err => {
-        console.error('Error creating schema:', err);
+// createSchema()
+//     .then(() => {
+//         const PORT = process.env.PORT || 4000;
+//         app.listen(PORT, () => {
+//             console.log(`Server is running on port ${PORT}`);
+//         });
+//     })
+//     .catch(err => {
+//         console.error('Error creating schema:', err);
+//     });
+
+    const PORT = process.env.PORT || 4000;
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
     });

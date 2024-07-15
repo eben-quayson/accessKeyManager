@@ -15,7 +15,9 @@ const signup = async (email, password) => {
     const newUser = await addUser(email, password, verificationToken);
 
     // Send verification email
-    const verificationLink = `${process.env.BASE_URL}/auth/verify/${verificationToken}`;
+    const verificationLink = `${process.env.BASE_URL}/verify/${verificationToken}`;
+    console.log('verification link is', verificationLink)
+
     const subject = 'Email Verification';
     const html = `<p>Please verify your email by clicking the link: <a href="${verificationLink}">Verify Email</a></p>`;
     await sendEmail(email, subject, html);
@@ -23,4 +25,16 @@ const signup = async (email, password) => {
     return newUser;
 };
 
-module.exports = { signup };
+const signin = async (email, password) => {
+    const user = await findUserByEmail(email);
+    if (user) {
+        return user
+    }
+    else {
+        throw new Error('User not found')
+    }
+};
+
+
+
+module.exports = { signup, signin };

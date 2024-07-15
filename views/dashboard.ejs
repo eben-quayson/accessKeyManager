@@ -6,8 +6,10 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-    <h1>Welcome, <%= email %></h1>
-    <h2>Your Access Keys</h2>
+    <h2>Welcome, <%= email %></h2>
+    <h5>Your Access Keys</h5>
+    <br>
+    
     <table>
         <thead>
             <tr>
@@ -18,6 +20,7 @@
             </tr>
         </thead>
         <tbody>
+            <% if (userKeys) {  %>
             <% userKeys.forEach(key => { %>
                 <tr>
                     <td><%= key.key %></td>
@@ -26,6 +29,7 @@
                     <td><%= key.is_active %></td>
                 </tr>
             <% }) %>
+            <% } %>
         </tbody>
     </table>
 
