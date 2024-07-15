@@ -163,8 +163,6 @@ After signing up, an email will be sent to the provided email address with a ver
 This project is licensed under the MIT License.
 
 ## Acknowledgements
-
-- Thanks to the contributors of this project.
 - Thanks to the open-source community for providing essential tools and resources.
 
 ```
