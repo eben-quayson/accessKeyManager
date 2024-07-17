@@ -17,7 +17,7 @@ class AuthController {
             req.session.userId = user.email;
             res.render('dashboard');
         } catch (err) {
-            console.log('Error signing up new user', err)
+            error = ( console.log('Error signing up new user', err))
         }
     }
 
