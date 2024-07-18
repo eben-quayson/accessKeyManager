@@ -84,8 +84,8 @@ key-manager/
 1. **Clone the repository:**
 
 ```sh
-git clone https://github.com/your-username/access-key-manager.git
-cd access-key-manager
+git clone https://github.com/eben-quayson/accessKeyManager.git
+cd accessKeyManager
 ```
 
 2. **Install dependencies:**
