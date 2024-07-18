@@ -108,6 +108,8 @@ DB_PASSWORD=your_db_password
 DB_PORT=5432
 EMAIL_USER=your_email@example.com
 EMAIL_PASS=your_email_password
+BASE_URL=http://localhost:3000
+
 ```
 
 4. **Create database schema:**
@@ -126,8 +128,7 @@ Start the application:
 npm start
 ```
 
-Visit `http://localhost:3000` in your browser.
-
+[Visit `http://localhost:3000` in your browser.
 ## Usage
 
 ### User Authentication
