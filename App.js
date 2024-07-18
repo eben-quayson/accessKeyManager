@@ -81,8 +81,8 @@ const createSchema = async () => {
 //     .catch(err => {
 //         console.error('Error creating schema:', err);
 //     });
-app.get('./auth/signin');
     const PORT = process.env.PORT || 4000;
     app.listen(PORT, () => {
+        app.get('./auth/signin');
         console.log(`Server is running on port ${PORT}`);
     });
