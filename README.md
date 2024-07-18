@@ -112,7 +112,7 @@ EMAIL_PASS=your_email_password
 
 4. **Create database schema:**
 
-Ensure your PostgreSQL server is running and execute the schema creation script in `app.js`:
+Ensure your PostgreSQL server is running and execute the schema creation script in `App.js`:
 
 ```sh
 node app.js
