@@ -61,11 +61,6 @@ app.get('/dashboard', async (req, res) => {
 });
 
 
-app.get('/dashboard', async (req, res) => {
-    if (!req.session.userId) {
-        return res.redirect('/auth/signin');
-    }});
-
 const createSchema = async () => {
     const userTable = `
         CREATE TABLE IF NOT EXISTS users (
