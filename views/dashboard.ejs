@@ -7,9 +7,9 @@
 </head>
 <body>
     <h2>Welcome, <%= email %></h2>
+    <button id="generateKeyBtn">Generate Key</button>
+
     <h5>Your Access Keys</h5>
-</br>
-    
     <table>
         <thead>
             <tr>
@@ -60,8 +60,7 @@
     <form action="/auth/signout" method="POST">
         <button type="submit">Sign Out</button>
     </form>
-    <form action="/keys/generateKey" method="GET">
-        <button type="submit">Get Key</button>
-    </form>
+
+    <script src="/javascript/key.js"></script>
 </body>
 </html>

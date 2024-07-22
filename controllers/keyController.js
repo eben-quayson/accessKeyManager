@@ -2,14 +2,16 @@ const KeyService = require('../services/keyService');
 
 class KeyController {
     static async generateKey(req, res) {
-        try {
-            const key = await KeyService.generateKey(req.session.userId);
-            res.json({ key });
+       try {
+            const userId = req.session.userId;
+            const newKey = await AccessKey.createKey(userId);
+             res.json({ key: newKey });
         } catch (err) {
             res.status(500).json({ error: err.message });
         }
     }
-
+ 
+    
     static async getUserKeys(req, res) {
         try {
             const keys = await KeyService.getUserKeys(req.session.userId);

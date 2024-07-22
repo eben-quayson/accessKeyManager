@@ -35,35 +35,6 @@ app.use('/password', passwordRoutes);
 app.get('/dashboard', async (req, res) => {
     if (!req.session.userId) {
         return res.redirect('/auth/signin');
-    }
-
-    try {
-        const client = await pool.connect();
-        const userQuery = 'SELECT * FROM users WHERE email = $1';
-        const userResult = await client.query(userQuery, [req.session.userId]);
-        const user = userResult.rows[0];
-
-        let userKeys = await AccessKey.getKeysByUser(user.email);
-        let allKeys = user.isadmin ? await AccessKey.getAllKeys() : [];
-
-        client.release();
-
-        res.render('dashboard', { 
-            email: user.email, 
-            userKeys, 
-            allKeys,
-            isAdmin: user.isadmin 
-        });
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Server Error');
-    }
-});
-
-
-app.get('/dashboard', async (req, res) => {
-    if (!req.session.userId) {
-        return res.redirect('/auth/signin');
     }});
 
 const createSchema = async () => {
