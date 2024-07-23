@@ -8,7 +8,8 @@ class PasswordService {
         const token = crypto.randomBytes(20).toString('hex');
         const expiration = Date.now() + 3600000; // 1 hour
         await PasswordReset.createResetRequest(email, token, expiration);
-        const resetLink = `http://localhost:3000/password/reset/${token}`;
+        const resetLink = `${process.env.BASE_URL}/password/reset/${token}`;
+
         await sendEmail(email, 'Password Reset', `Click here to reset your password: ${resetLink}`);
     }
 

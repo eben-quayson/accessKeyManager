@@ -1,5 +1,4 @@
 const AccessKey = require('../models/AccessKey');
-const generateKey = require('../utils/generateKey');
 
 class KeyService {
     static async generateKey(userId) {
