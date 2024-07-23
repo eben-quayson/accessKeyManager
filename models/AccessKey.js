@@ -1,4 +1,5 @@
 const { pool } = require('../config/config');
+const crypto = require('crypto');
 
 class AccessKey {
     static async createKey(userId) {
