@@ -1,4 +1,5 @@
 const KeyService = require('../services/keyService');
+const AccessKey = require('../models/AccessKey');
 
 class KeyController {
     static async generateKey(req, res) {
