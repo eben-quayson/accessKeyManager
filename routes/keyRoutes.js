@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const KeyController = require('../controllers/keyController'); 
-const authMiddleware = require('../middleware/authMiddleware');
+const keyController = require('../controllers/keyController'); 
 
 
-router.get('/keys', KeyController.getAllKeys);
-router.get('/user/keys', KeyController.getUserKeys);
-router.get('/generateKey', KeyController.generateKey);
-router.post('/generateKey', KeyController.generateKey);
+router.get('/keys', keyController.getAllKeys);
+router.get('/user/keys', keyController.getUserKeys);
+router.get('/generateKey', keyController.generateKey);
+router.post('/generateKey', keyController.generateKey);
 
 
 
