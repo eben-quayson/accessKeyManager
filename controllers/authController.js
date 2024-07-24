@@ -30,9 +30,8 @@ class AuthController {
             const { email, password } = req.body;
             const user = await authService.signin(email, password);
             if (user) {
-                req.session.userId = email; // Store the email in the session
-                req.session.isAdmin = user.isAdmin; // Optionally store if the user is an admin
-                // Fetch user keys and all keys if admin
+                req.session.userId = user.email; 
+                req.session.isAdmin = user.isAdmin; 
                 const userKeys = await AccessKey.getKeysByUser(email);
                 const allKeys = req.session.isAdmin ? await AccessKey.getAllKeys() : [];
                 // Render the dashboard with the user data
