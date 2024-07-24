@@ -14,7 +14,7 @@ class AuthController {
         try {
             const { email, password } = req.body;
             const user = await signup(email, password);
-            req.session.userId = user.email;
+            req.session.userEmail = user.email;
             res.render('dashboard');
         } catch (err) {
             error = ( console.log('Error signing up new user', err))
@@ -26,8 +26,8 @@ class AuthController {
             const { email, password } = req.body;
             const user = await signin(email, password);
             if (user) {
-                req.session.userId = user.email;
-                console.log({ email: user.email, isAdmin: user.isAdmin, userKeys: user.keys, allKeys: user.allKeys })
+                req.session.userEmail = user.email;
+                console.log({userId: user.id, email: user.email, isAdmin: user.isAdmin, userKeys: user.keys, allKeys: user.allKeys })
                 res.render('dashboard', { email: user.email, isAdmin: user.isAdmin, userKeys: user.keys, allKeys: user.allKeys });
             } else {
                 res.render('/signin');

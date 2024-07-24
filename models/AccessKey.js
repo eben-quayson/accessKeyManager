@@ -18,6 +18,7 @@ class AccessKey {
         }
     }
 
+
     static async getKeysByUser(userId) {
         const client = await pool.connect();
         try {

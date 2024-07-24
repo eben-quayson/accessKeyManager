@@ -4,7 +4,7 @@ const AccessKey = require('../models/AccessKey');
 class KeyController {
     static async generateKey(req, res) {
        try {
-            const userId = req.session.userId;
+            const userId = req.session.user.userId;
             const newKey = await AccessKey.createKey(userId);
              res.json({ key: newKey });
         } catch (err) {
