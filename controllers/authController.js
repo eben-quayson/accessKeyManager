@@ -14,10 +14,10 @@ class AuthController {
         try {
             const { email, password } = req.body;
             const user = await signup(email, password);
-            req.session.userEmail = user.email;
+            req.session.userId = user.email;
             res.render('dashboard');
         } catch (err) {
-            error = ( console.log('Error signing up new user', err))
+            res.status(500).json({error: err.message})
         }
     }
 
@@ -26,7 +26,7 @@ class AuthController {
             const { email, password } = req.body;
             const user = await signin(email, password);
             if (user) {
-                req.session.userEmail = user.email;
+                req.session.userId = user.email;
                 console.log({userId: user.id, email: user.email, isAdmin: user.isAdmin, userKeys: user.keys, allKeys: user.allKeys })
                 res.render('dashboard', { email: user.email, isAdmin: user.isAdmin, userKeys: user.keys, allKeys: user.allKeys });
             } else {
@@ -51,6 +51,19 @@ class AuthController {
             res.status(500).json({ error: err.message });
         }
     }
+
+    static async getDashboard(req, res) {
+        try {
+            const email = req.session.userId;
+            const userKeys = await AccessKey.getKeysByUser(email);
+            const allKeys = req.session.isAdmin ? await AccessKey.getAllKeys() : [];
+            res.render('dashboard', { email, userKeys, allKeys, isAdmin: req.session.isAdmin });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
+    }
+
+
 
     static signout(req, res) {
         req.session.destroy(() => {
