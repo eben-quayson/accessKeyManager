@@ -11,7 +11,18 @@ const addUser = async (email, password, verificationToken) => {
     const result = await pool.query(query, values);
     return result.rows[0];
 };
-
+async function findByEmail(email) {
+    const client = await pool.connect();
+    try {
+        const result = await client.query(
+            `SELECT * FROM users WHERE email = $1`,
+            [email]
+        );
+        return result.rows[0];
+    } finally {
+        client.release();
+    }
+};
 const findUserByEmail = async (email) => {
     const query = `SELECT * FROM users WHERE email = $1;`;
     const values = [email];
@@ -51,6 +62,7 @@ module.exports = {
     findUserByEmail,
     findUserByVerificationToken,
     verifyUser,
-    updatePasswordByEmail
-    
+    updatePasswordByEmail,
+    findByEmail
+
 };
