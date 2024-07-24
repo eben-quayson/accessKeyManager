@@ -13,30 +13,38 @@ class AuthController {
     static async signup(req, res) {
         try {
             const { email, password } = req.body;
-            const user = await signup(email, password);
-            req.session.userId = user.email;
-            res.render('dashboard');
+            const user = await AuthService.signup(email, password);
+            req.session.userId = email; // Store the email in the session
+            req.session.isAdmin = user.isAdmin; // Optionally store if the user is an admin
+            // Fetch user keys and all keys if admin
+            const userKeys = await AccessKey.getKeysByUser(email);
+            const allKeys = req.session.isAdmin ? await AccessKey.getAllKeys() : [];
+            // Render the dashboard with the user data
+            res.render('dashboard', { email, userKeys, allKeys, isAdmin: req.session.isAdmin });
         } catch (err) {
-            res.status(500).json({error: err.message})
+            res.status(500).json({ error: err.message });
         }
     }
 
     static async signin(req, res) {
         try {
             const { email, password } = req.body;
-            const user = await signin(email, password);
+            const user = await AuthService.signin(email, password);
             if (user) {
-                req.session.userId = user.email;
-                console.log({userId: user.id, email: user.email, isAdmin: user.isAdmin, userKeys: user.keys, allKeys: user.allKeys })
-                res.render('dashboard', { email: user.email, isAdmin: user.isAdmin, userKeys: user.keys, allKeys: user.allKeys });
+                req.session.userId = email; // Store the email in the session
+                req.session.isAdmin = user.isAdmin; // Optionally store if the user is an admin
+                // Fetch user keys and all keys if admin
+                const userKeys = await AccessKey.getKeysByUser(email);
+                const allKeys = req.session.isAdmin ? await AccessKey.getAllKeys() : [];
+                // Render the dashboard with the user data
+                res.render('dashboard', { email, userKeys, allKeys, isAdmin: req.session.isAdmin });
             } else {
-                res.render('/signin');
+                res.redirect('/auth/signin');
             }
         } catch (err) {
-           res.status(500).json({ error: err.message });
+            res.status(500).json({ error: err.message });
         }
     }
-
     static async verifyEmail(req, res) {
         try {
             const { token } = req.params;

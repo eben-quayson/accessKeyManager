@@ -41,6 +41,11 @@ app.get('/dashboard', async (req, res) => {
         return res.redirect('/auth/signin');
     }
 
+app.get('/', (req, res) => {
+        res.redirect('/auth/signin');
+    });
+    
+
     try {
         const client = await pool.connect();
         const userQuery = 'SELECT * FROM users WHERE email = $1';
