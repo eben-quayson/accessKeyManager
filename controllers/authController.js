@@ -15,7 +15,8 @@ class AuthController {
         try {
             const { email, password } = req.body;
             const user = await authService.signup(email, password);
-            req.session.email = user.email; // Store email in session
+            req.session.email = user.email;
+            req.session.password = user.password // Store email in session
             res.redirect('/dashboard');
         } catch (err) {
             res.status(500).json({ error: err.message });
@@ -26,7 +27,8 @@ class AuthController {
         try {
             const { email, password } = req.body;
             const user = await authService.signin(email, password);
-            req.session.email = user.email; // Store email in session
+            req.session.email = user.email; 
+            req.sesion.password = user.password;// Store email in session
             res.redirect('/dashboard');
         } catch (err) {
             res.status(500).json({ error: err.message });
