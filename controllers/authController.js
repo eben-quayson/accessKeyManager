@@ -1,4 +1,4 @@
-const { signup, signin } = require('../services/authService');
+const authService = require('../services/authService');
 const { verifyUser, findUserByVerificationToken } = require('../models/User');
 
 class AuthController {
