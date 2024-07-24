@@ -42,7 +42,7 @@ app.get('/dashboard', async (req, res) => {
     }
 
 app.get('/', (req, res) => {
-        res.redirect('/auth/signin');
+        res.render('/auth/signin');
     });
     
 
