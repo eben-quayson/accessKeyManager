@@ -12,7 +12,6 @@ class KeyController {
             res.status(500).json({ error: err.message });
         }
     }
- 
     
     static async getUserKeys(req, res) {
         try {
@@ -48,22 +47,40 @@ class KeyController {
 
     static async generateKey(req, res) {
         try {
-            const email = req.session.userId; // Retrieve email from session
+            const email = req.session.email;
             if (!email) {
-                return res.status(401).json({ error: 'Unauthorized' });
+                return res.status(400).json({ error: 'User not authenticated' });
             }
 
-            // Retrieve user ID from the database using the email
-            const user = await User.findByEmail(email);
-            if (!user) {
-                return res.status(404).json({ error: 'User not found' });
-            }
-
-            const newKey = await AccessKey.createKey(user.id);
-            res.json({ key: newKey.key });
+            const key = await AccessKey.createKey(email);
+            res.status(200).json({ key });
         } catch (err) {
-            res.status(500).json({ error: 'Failed to generate key' });
+            res.status(500).json({ error: err.message });
+        }
+    }
+
+    static async getKeys(req, res) {
+        try {
+            const email = req.session.email;
+            if (!email) {
+                return res.status(400).json({ error: 'User not authenticated' });
+            }
+
+            const keys = await AccessKey.getKeysByEmail(email);
+            res.status(200).json({ keys });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
+    }
+
+    static async getAllKeys(req, res) {
+        try {
+            const keys = await AccessKey.getAllKeys();
+            res.status(200).json({ keys });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
         }
     }
 }
+
 module.exports = KeyController;

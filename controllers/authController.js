@@ -15,11 +15,8 @@ class AuthController {
         try {
             const { email, password } = req.body;
             const user = await authService.signup(email, password);
-            req.session.userId = email; 
-            req.session.isAdmin = user.isAdmin; 
-            const userKeys = await AccessKey.getKeysByUser(email);
-            const allKeys = req.session.isAdmin ? await AccessKey.getAllKeys() : [];
-            res.render('dashboard', { email, userKeys, allKeys, isAdmin: req.session.isAdmin });
+            req.session.email = user.email; // Store email in session
+            res.redirect('/dashboard');
         } catch (err) {
             res.status(500).json({ error: err.message });
         }
@@ -29,16 +26,8 @@ class AuthController {
         try {
             const { email, password } = req.body;
             const user = await authService.signin(email, password);
-            if (user) {
-                req.session.email = email; 
-                req.session.isAdmin = user.isAdmin; 
-                const userKeys = await AccessKey.getKeysByUser(email);
-                const allKeys = req.session.isAdmin ? await AccessKey.getAllKeys() : [];
-                // Render the dashboard with the user data
-                res.render('dashboard', { email, userKeys, allKeys, isAdmin: req.session.isAdmin });
-            } else {
-                res.redirect('/auth/signin');
-            }
+            req.session.email = user.email; // Store email in session
+            res.redirect('/dashboard');
         } catch (err) {
             res.status(500).json({ error: err.message });
         }

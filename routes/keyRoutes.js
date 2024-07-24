@@ -7,6 +7,9 @@ router.get('/keys', keyController.getAllKeys);
 router.get('/user/keys', keyController.getUserKeys);
 router.get('/generateKey', keyController.generateKey);
 router.post('/generateKey', keyController.generateKey);
+router.get('/keys', keyController.getKeys);
+router.get('/allKeys', keyController.getAllKeys);
+
 
 
 
