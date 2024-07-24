@@ -30,7 +30,7 @@ class AuthController {
             const { email, password } = req.body;
             const user = await authService.signin(email, password);
             if (user) {
-                req.session.userId = user.email; 
+                req.session.email = email; 
                 req.session.isAdmin = user.isAdmin; 
                 const userKeys = await AccessKey.getKeysByUser(email);
                 const allKeys = req.session.isAdmin ? await AccessKey.getAllKeys() : [];

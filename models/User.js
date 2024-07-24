@@ -36,7 +36,7 @@ async function updatePasswordByEmail(email, hashedPassword) {
             `UPDATE users SET password = $1 WHERE email = $2`,
             [hashedPassword, email]
         );
-        return result.rowCount > 0; // Returns true if update was successful
+        return result.rowCount > 0;
     } finally {
         client.release();
     }
