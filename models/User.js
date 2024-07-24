@@ -18,6 +18,18 @@ const findUserByEmail = async (email) => {
     const result = await pool.query(query, values);
     return result.rows[0];
 };
+async function updatePasswordByEmail(email, hashedPassword) {
+    const client = await pool.connect();
+    try {
+        const result = await client.query(
+            `UPDATE users SET password = $1 WHERE email = $2`,
+            [hashedPassword, email]
+        );
+        return result.rowCount > 0; // Returns true if update was successful
+    } finally {
+        client.release();
+    }
+};
 
 const findUserByVerificationToken = async (token) => {
     const query = `SELECT * FROM users WHERE verification_token = $1;`;
@@ -25,6 +37,7 @@ const findUserByVerificationToken = async (token) => {
     const result = await pool.query(query, values);
     return result.rows[0];
 };
+
 
 const verifyUser = async (email) => {
     const query = `UPDATE users SET is_verified = TRUE, verification_token = NULL WHERE email = $1;`;
@@ -37,5 +50,7 @@ module.exports = {
     addUser,
     findUserByEmail,
     findUserByVerificationToken,
-    verifyUser
+    verifyUser,
+    updatePasswordByEmail
+    
 };
