@@ -3,6 +3,7 @@ const {
     signup: authServiceSignup,
   } = require("../services/authService");
   const { verifyUser, findUserByVerificationToken } = require("../models/User");
+  const AccessKey = require('../models/AccessKey')
   
   class AuthController {
     static renderSignUpForm(req, res) {

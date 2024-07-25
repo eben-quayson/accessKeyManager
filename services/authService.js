@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const sendEmail = require('../utils/sendEmail');
 const { addUser, findUserByEmail} = require('../models/User');
 
+
 const signup = async (email, password) => {
     const existingUser = await addUser(email);
     if (existingUser) {
