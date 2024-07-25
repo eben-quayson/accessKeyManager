@@ -20,9 +20,11 @@ const {
         const user = await authServiceSignup(email, password);
         req.session.userId = email; // Store the email in the session
         req.session.isAdmin = user.isAdmin; // Optionally store if the user is an admin
+
         // Fetch user keys and all keys if admin
         const userKeys = await AccessKey.getKeysByUser(email);
         const allKeys = req.session.isAdmin ? await AccessKey.getAllKeys() : [];
+        
         // Render the dashboard with the user data
         res.render("dashboard", {
           email,
@@ -43,7 +45,7 @@ const {
           req.session.userId = email; // Store the email in the session
           req.session.isAdmin = user.isAdmin; // Optionally store if the user is an admin
           // Fetch user keys and all keys if admin
-          const userKeys = await AccessKey.getKeysByUser(email);
+          const userKeys = await AccessKey.getKeysByEmail(email);
           const allKeys = req.session.isAdmin ? await AccessKey.getAllKeys() : [];
           // Render the dashboard with the user data
           res.render("dashboard", {
@@ -77,7 +79,7 @@ const {
     static async getDashboard(req, res) {
       try {
         const email = req.session.userId;
-        const userKeys = await AccessKey.getKeysByUser(email);
+        const userKeys = await AccessKey.getKeysByEmail(email);
         const allKeys = req.session.isAdmin ? await AccessKey.getAllKeys() : [];
         res.render("dashboard", {
           email,
