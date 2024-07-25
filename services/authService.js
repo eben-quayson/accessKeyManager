@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 const sendEmail = require('../utils/sendEmail');
-const { addUser, findUserByEmail, findByEmail } = require('../models/User');
+const { addUser, findUserByEmail} = require('../models/User');
 
 const signup = async (email, password) => {
     const existingUser = await addUser(email);
@@ -26,14 +26,14 @@ const signup = async (email, password) => {
 };
 
 const signin = async (email, password) => {
-    const user = await findByEmail(email);
+    const user = await findUserByEmail(email);
     if (user) {
         return user
     }
     else {
         throw new Error('User not found')
     }
-    
+
 };
 
 
